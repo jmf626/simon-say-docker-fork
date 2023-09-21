@@ -16,12 +16,12 @@
                     <div class="card-body text-center">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Username" aria-label="Username" id="usernameInput">
-                            <button class="btn btn-outline-success" id="submitButton">Guardar</button>
+                            <!-- button class="btn btn-outline-success" id="submitButton">Guardar</button -->
                         </div>
                         <p>Total de Rondas Jugadas: <span id="contadorRondas">0</span></p>
                         <p>Victorias: <span id="contadorVictorias">0</span></p>
                         <p>Derrotas: <span id="contadorDerrotas">0</span></p>
-                        <button id="enviarDatos" class="btn btn-primary">Guardar partida</button>
+                        <button id="enviarDatos" class="btn btn-primary" disabled>Guardar partida</button>
                     </div>
                 </div>
             </div>

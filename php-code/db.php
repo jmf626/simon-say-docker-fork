@@ -25,10 +25,16 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $count = $row['count'];
+    $status = 0;
+    /*
+        0: Usuario en uso.
+        1: Usuario grabado correctamente.
+        2: Error en la consulta.
+    */
     
     if ($count > 0) {
         // El nombre de usuario ya existe, muestra un mensaje de error
-        echo "El nombre de usuario ya está en uso. Introduce un nombre de usuario diferente.";
+        //echo "El nombre de usuario ya está en uso. Introduce un nombre de usuario diferente.";
     } else {
         // El nombre de usuario no existe, puedes continuar con la inserción
         // Obtén los valores de los contadores y otros datos
@@ -41,14 +47,20 @@ if ($result->num_rows > 0) {
 
         // Ejecuta la consulta de inserción
         if ($conn->query($insertSql) === TRUE) {
-            echo "Datos insertados correctamente";
+            //echo "Datos insertados correctamente";
+            $status = 1;
+
         } else {
-            echo "Error al insertar datos: " . $conn->error;
+            //echo "Error al insertar datos: " . $conn->error;
+            $status = 2;
         }
     }
 } else {
-    echo "Error al verificar el nombre de usuario: " . $conn->error;
+    //echo "Error al verificar el nombre de usuario: " . $conn->error;
+    $status = 2;
 }
+
+echo $status;
 
 // Cierra la conexión
 $conn->close();

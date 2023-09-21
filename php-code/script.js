@@ -2,7 +2,7 @@ const round = document.getElementById('round');
 const simonButtons = document.getElementsByClassName('square');
 const startButton = document.getElementById('startButton');
 
-    //guarda el nombre del usuario
+    /* //guarda el nombre del usuario
     document.getElementById("submitButton").addEventListener("click", function() {
         // Obtener el valor del campo de texto
         var username = document.getElementById("usernameInput").value;
@@ -10,7 +10,7 @@ const startButton = document.getElementById('startButton');
         // Guardar el valor en una variable en JavaScript
         // Puedes hacer lo que quieras con la variable 'username' aquí
         console.log("Nombre de usuario ingresado: " + username);
-    });
+    }); */
 
 
 
@@ -142,6 +142,11 @@ class Simon {
         this.errorSound.play();
         this.display.startButton.disabled = false;
         this.blockedButtons = true;
+        Swal.fire({
+            icon: 'error',
+            title: '!Perdiste!',
+            text: 'Mejor suerte para la próxima.',
+        })
 
         // Incrementar el contador de derrotas
         this.derrotas++;
@@ -161,6 +166,11 @@ class Simon {
             element.classList.add('winner');
         });
         this.updateRound('🏆');
+        Swal.fire({
+            icon: 'success',
+            title: '!Felicitaciones!',
+            text: 'Has ganado la ronda.',
+        })
 
         // Incrementar el contador de victorias
         this.victorias++;
@@ -210,6 +220,16 @@ class Simon {
 // });
 
 $(document).ready(function() {
+
+    $('#usernameInput').keyup(function() {
+        if (!$(this).val()) {
+            $('#enviarDatos').prop('disabled', true);
+        }
+        else {
+            $('#enviarDatos').prop('disabled', false);
+        }
+    });
+
     $('#enviarDatos').click(function() {
         // Obtén los valores de los contadores
         const victorias = simon.victorias;
@@ -233,11 +253,31 @@ $(document).ready(function() {
             url: 'db.php', // Reemplaza con la URL de tu archivo PHP
             data: datos,
             success: function(response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Guardado',
-                    text: 'Los datos de tu partida fueron guardados con exito',
-                  })
+
+                console.log(response);
+
+                if (response == 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '¡Ups!',
+                        text: 'Este usuario está en uso, lo sentimos.',
+                    })
+                }
+                else if (response == 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Guardado',
+                        text: 'Los datos de tu partida fueron guardados con exito',
+                    })
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Ups!',
+                        text: 'Hubo un pequeño inconveniente, lo resolveremos a la brevedad.',
+                    })
+                }
+
             },
             error: function(error) {
                 // Muestra una alerta si ocurre un error durante la solicitud AJAX
